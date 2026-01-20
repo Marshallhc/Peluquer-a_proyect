@@ -1,0 +1,1583 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fabiana Oliver | Peluquería - Lanús</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #D4AF37;
+            --gold-light: #E5C158;
+            --gold-dark: #B8941F;
+            --black: #0A0A0A;
+            --white: #FEFEFE;
+            --gray: #2A2A2A;
+            --gray-light: #F5F5F5;
+            --red-occupied: #FF6B6B;
+            --green-available: #51CF66;
+            --shadow-gold: 0 4px 20px rgba(212, 175, 55, 0.2);
+            --shadow-deep: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--black);
+            color: var(--white);
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 400;
+            letter-spacing: 2px;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #0A0A0A 0%, #1a1a1a 100%);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+        }
+
+        .logo-container {
+            position: relative;
+            z-index: 2;
+            margin-bottom: 3rem;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo {
+            width: 150px;
+            height: 150px;
+            border: 3px solid var(--gold);
+            border-radius: 50%;
+            padding: 10px;
+            background: rgba(212, 175, 55, 0.05);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-gold);
+            object-fit: cover;
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 2;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-transform: uppercase;
+            letter-spacing: 8px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--gray-light);
+            margin-bottom: 1rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .location {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 3rem;
+            color: var(--gold);
+            font-size: 0.9rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1.2rem 3rem;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+            color: var(--black);
+            text-decoration: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-radius: 50px;
+            transition: all 0.4s ease;
+            box-shadow: var(--shadow-gold);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(212, 175, 55, 0.4);
+        }
+
+        /* Services Section */
+        .services {
+            padding: 6rem 2rem;
+            background: var(--white);
+            color: var(--black);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--gold-dark);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 4rem;
+            font-size: 1.1rem;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .service-card {
+            background: var(--gray-light);
+            padding: 2.5rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+            word-wrap: break-word;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--gold);
+            box-shadow: var(--shadow-deep);
+        }
+
+        .service-card h3 {
+            color: var(--gold-dark);
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+
+        .service-card p {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .service-price {
+            font-weight: 600;
+            color: var(--black);
+            font-size: 1.3rem;
+            margin-top: 1rem;
+        }
+
+        /* Calendar Section */
+        .calendar-section {
+            padding: 6rem 2rem;
+            background: linear-gradient(180deg, #0A0A0A 0%, #1a1a1a 100%);
+        }
+
+        .calendar-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: var(--gray);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow-deep);
+            overflow: hidden;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .calendar-nav {
+            background: none;
+            border: 2px solid var(--gold);
+            color: var(--gold);
+            padding: 0.5rem 1.5rem;
+            cursor: pointer;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .calendar-nav:hover {
+            background: var(--gold);
+            color: var(--black);
+        }
+
+        .calendar-month {
+            font-size: 2rem;
+            color: var(--gold);
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .calendar-day-header {
+            text-align: center;
+            padding: 1rem;
+            font-weight: 600;
+            color: var(--gold);
+            font-size: 0.9rem;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+            position: relative;
+            padding: 0.5rem;
+            min-height: 50px;
+        }
+
+        .calendar-day:hover {
+            transform: scale(1.05);
+            border-color: var(--gold);
+        }
+
+        .calendar-day.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .calendar-day.disabled:hover {
+            transform: none;
+            border-color: transparent;
+        }
+
+        .calendar-day.selected {
+            background: var(--gold);
+            color: var(--black);
+        }
+
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .time-slot {
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid var(--green-available);
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .time-slot.available {
+            border-color: var(--green-available);
+        }
+
+        .time-slot.available:hover {
+            background: var(--green-available);
+            color: var(--black);
+            transform: scale(1.05);
+        }
+
+        .time-slot.occupied {
+            border-color: var(--red-occupied);
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .time-slot.selected {
+            background: var(--gold);
+            border-color: var(--gold);
+            color: var(--black);
+        }
+
+        .time-slot.reserved {
+            border-color: #FFA500;
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--gray);
+            padding: 3rem;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+            animation: modalSlide 0.3s ease-out;
+            max-height: 85vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        @keyframes modalSlide {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--gold);
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .modal-close:hover {
+            transform: rotate(90deg);
+        }
+
+        .modal h2 {
+            color: var(--gold);
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+        }
+
+        .booking-summary {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .booking-summary p {
+            margin: 0.5rem 0;
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .booking-summary strong {
+            color: var(--gold);
+            flex-shrink: 0;
+        }
+
+        .booking-summary span {
+            text-align: right;
+            word-break: break-word;
+        }
+
+        .payment-options {
+            margin: 2rem 0;
+        }
+
+        .payment-option {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.2rem;
+            margin: 1rem 0;
+            border-radius: 10px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: block;
+        }
+
+        .payment-option:hover {
+            border-color: var(--gold);
+        }
+
+        .payment-option.selected {
+            border-color: var(--gold);
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .payment-option input[type="radio"] {
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+
+        .payment-option strong {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .timer {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(255, 107, 107, 0.2);
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            font-size: 1.2rem;
+            color: var(--red-occupied);
+        }
+
+        .confirm-button {
+            width: 100%;
+            padding: 1.2rem;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+            color: var(--black);
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .confirm-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(212, 175, 55, 0.4);
+        }
+
+        .confirm-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--black);
+            padding: 3rem 2rem;
+            text-align: center;
+            border-top: 1px solid var(--gold);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-info {
+            margin-bottom: 2rem;
+        }
+
+        .footer-info h3 {
+            color: var(--gold);
+            margin-bottom: 1rem;
+            font-size: 2rem;
+        }
+
+        .footer-info p {
+            color: var(--gray-light);
+            margin: 0.5rem 0;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .social-links a {
+            color: var(--gold);
+            font-size: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            transform: scale(1.2);
+            color: var(--gold-light);
+        }
+
+        /* Loading spinner */
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top: 3px solid var(--gold);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 2rem auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+                letter-spacing: 4px;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .calendar-container {
+                padding: 1.5rem;
+                margin: 0 0.5rem;
+            }
+
+            .calendar-header {
+                flex-direction: column;
+                gap: 1rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .calendar-month {
+                font-size: 1.5rem;
+                text-align: center;
+                order: -1;
+            }
+
+            .calendar-nav {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .calendar-grid {
+                gap: 0.3rem;
+            }
+
+            .calendar-day-header {
+                font-size: 0.75rem;
+                padding: 0.5rem 0.2rem;
+            }
+
+            .calendar-day {
+                font-size: 0.85rem;
+                min-height: 45px;
+                padding: 0.3rem;
+            }
+
+            .time-slots {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0.8rem;
+            }
+
+            .time-slot {
+                padding: 0.8rem 0.5rem;
+                font-size: 0.85rem;
+            }
+
+            .modal-content {
+                padding: 1.5rem;
+                max-width: 95%;
+                max-height: 90vh;
+                overflow-y: auto;
+            }
+
+            .modal h2 {
+                font-size: 1.8rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .service-selector,
+            .service-option,
+            .payment-option {
+                font-size: 0.9rem;
+            }
+
+            .service-option,
+            .payment-option {
+                padding: 1rem;
+            }
+
+            .service-option p,
+            .payment-option p {
+                font-size: 0.85rem !important;
+            }
+
+            .booking-summary {
+                padding: 1rem;
+                font-size: 0.9rem;
+            }
+
+            .booking-summary p {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.3rem;
+            }
+
+            .timer {
+                font-size: 1rem;
+                padding: 0.8rem;
+            }
+
+            .confirm-button {
+                font-size: 1rem;
+                padding: 1rem;
+            }
+
+            .legend {
+                gap: 1rem;
+                font-size: 0.85rem;
+            }
+
+            .legend-item {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+                letter-spacing: 2px;
+            }
+
+            .calendar-container {
+                padding: 1rem;
+            }
+
+            .calendar-month {
+                font-size: 1.3rem;
+            }
+
+            .calendar-day {
+                font-size: 0.8rem;
+                min-height: 40px;
+            }
+
+            .calendar-day-header {
+                font-size: 0.7rem;
+            }
+
+            .time-slots {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0.6rem;
+            }
+
+            .time-slot {
+                padding: 0.7rem 0.3rem;
+                font-size: 0.8rem;
+            }
+
+            .modal-content {
+                padding: 1rem;
+            }
+
+            .modal h2 {
+                font-size: 1.5rem;
+            }
+
+            .service-card {
+                padding: 1.5rem;
+            }
+        }
+
+        .service-selector {
+            margin: 2rem 0;
+        }
+
+        .service-option {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.2rem;
+            margin: 1rem 0;
+            border-radius: 10px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .service-option:hover {
+            border-color: var(--gold);
+        }
+
+        .service-option.selected {
+            border-color: var(--gold);
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 5px;
+        }
+
+        .legend-color.available {
+            background: var(--green-available);
+        }
+
+        .legend-color.occupied {
+            background: var(--red-occupied);
+        }
+
+        .legend-color.reserved {
+            background: #FFA500;
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="logo-container">
+            <img src="logo.jpg" alt="Fabiana Oliver Logo" class="logo">
+        </div>
+        <div class="hero-content">
+            <h1>Fabiana Oliver</h1>
+            <p>Peluquería</p>
+            <div class="location">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                <span>Moreno 402 y 2 de Mayo - Lanús</span>
+            </div>
+            <a href="#calendar" class="cta-button">Reservar Turno</a>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services">
+        <div class="container">
+            <h2 class="section-title">Nuestros Servicios</h2>
+            <p class="section-subtitle">Transformamos tu cabello con técnicas de vanguardia y productos de primera calidad</p>
+            
+            <div class="services-grid" id="servicesGrid">
+                <!-- Services will be loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Calendar Section -->
+    <section class="calendar-section" id="calendar">
+        <div class="container">
+            <h2 class="section-title">Reserva tu Turno</h2>
+            <p class="section-subtitle">Selecciona la fecha y hora que más te convenga</p>
+            
+            <div class="calendar-container">
+                <div class="calendar-header">
+                    <button class="calendar-nav" id="prevMonth">&larr; Anterior</button>
+                    <h3 class="calendar-month" id="currentMonth"></h3>
+                    <button class="calendar-nav" id="nextMonth">Siguiente &rarr;</button>
+                </div>
+
+                <div class="calendar-grid">
+                    <div class="calendar-day-header">Dom</div>
+                    <div class="calendar-day-header">Lun</div>
+                    <div class="calendar-day-header">Mar</div>
+                    <div class="calendar-day-header">Mié</div>
+                    <div class="calendar-day-header">Jue</div>
+                    <div class="calendar-day-header">Vie</div>
+                    <div class="calendar-day-header">Sáb</div>
+                </div>
+                
+                <div class="calendar-grid" id="calendarDays">
+                    <!-- Calendar days will be generated here -->
+                </div>
+
+                <div class="time-slots" id="timeSlots">
+                    <!-- Time slots will be generated here -->
+                </div>
+
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color available"></div>
+                        <span>Disponible</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color occupied"></div>
+                        <span>Ocupado</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color reserved"></div>
+                        <span>Reservado (pendiente de pago)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Booking Modal -->
+    <div class="modal" id="bookingModal">
+        <div class="modal-content">
+            <button class="modal-close" id="closeModal">&times;</button>
+            <h2>Confirmar Reserva</h2>
+            
+            <div class="timer" id="reservationTimer">
+                Tiempo restante para completar la reserva: <strong id="timerDisplay">5:00</strong>
+            </div>
+
+            <div class="service-selector" id="serviceSelector">
+                <h3 style="color: var(--gold); margin-bottom: 1rem;">Selecciona el servicio:</h3>
+                <!-- Service options will be generated here -->
+            </div>
+
+            <div class="booking-summary" id="bookingSummary">
+                <!-- Booking details will be shown here -->
+            </div>
+
+            <div class="payment-options">
+                <h3 style="color: var(--gold); margin-bottom: 1rem;">Opciones de pago:</h3>
+                
+                <label class="payment-option">
+                    <div style="display: flex; align-items: flex-start; gap: 1rem; width: 100%;">
+                        <input type="radio" name="payment" value="third" checked style="margin-top: 0.2rem;">
+                        <div style="flex: 1;">
+                            <strong>Pagar un tercio ahora</strong>
+                            <p style="font-size: 0.9rem; margin-top: 0.5rem; opacity: 0.8;">El resto se abona el día del turno</p>
+                            <p id="thirdAmount" style="color: var(--gold); margin-top: 0.5rem; font-weight: 600;"></p>
+                        </div>
+                    </div>
+                </label>
+
+                <label class="payment-option">
+                    <div style="display: flex; align-items: flex-start; gap: 1rem; width: 100%;">
+                        <input type="radio" name="payment" value="half" style="margin-top: 0.2rem;">
+                        <div style="flex: 1;">
+                            <strong>Pagar la mitad ahora</strong>
+                            <p style="font-size: 0.9rem; margin-top: 0.5rem; opacity: 0.8;">El resto se abona el día del turno</p>
+                            <p id="halfAmount" style="color: var(--gold); margin-top: 0.5rem; font-weight: 600;"></p>
+                        </div>
+                    </div>
+                </label>
+
+                <label class="payment-option">
+                    <div style="display: flex; align-items: flex-start; gap: 1rem; width: 100%;">
+                        <input type="radio" name="payment" value="full" style="margin-top: 0.2rem;">
+                        <div style="flex: 1;">
+                            <strong>Pagar el total ahora</strong>
+                            <p id="fullAmount" style="color: var(--gold); margin-top: 0.5rem; font-weight: 600;"></p>
+                        </div>
+                    </div>
+                </label>
+
+                <label class="payment-option">
+                    <div style="display: flex; align-items: flex-start; gap: 1rem; width: 100%;">
+                        <input type="radio" name="payment" value="cash" style="margin-top: 0.2rem;">
+                        <div style="flex: 1;">
+                            <strong>Pagar en efectivo en el local</strong>
+                            <p style="font-size: 0.9rem; margin-top: 0.5rem; opacity: 0.8;">Deberás confirmar tu asistencia vía WhatsApp</p>
+                        </div>
+                    </div>
+                </label>
+            </div>
+
+            <button class="confirm-button" id="confirmBooking">Continuar al Pago</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-info">
+                <h3>Fabiana Oliver</h3>
+                <p>📍 Moreno 402 y 2 de Mayo - Lanús</p>
+                <p>📞 11-3840-9076</p>
+                <p>🕐 Martes a Viernes: 10:00 - 19:00hs</p>
+                <p>🕐 Sábado: 10:00 - 18:00hs</p>
+            </div>
+            <div class="social-links">
+                <a href="https://www.instagram.com/fabianaoliverpeluquera/" target="_blank" title="Instagram">
+                    <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                    </svg>
+                </a>
+                <a href="https://wa.link/7ae790" target="_blank" title="WhatsApp">
+                    <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                    </svg>
+                </a>
+            </div>
+            <p style="opacity: 0.6; margin-top: 2rem;">&copy; 2026 Fabiana Oliver. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Configuration
+        const WHATSAPP_NUMBER = '5491138409076';
+        const MERCADOPAGO_PUBLIC_KEY = 'APP_USR-e2f72e45-16f7-4a3d-abc9-71a7cf5c9e85'; // Replace with your actual public key
+        const RESERVATION_TIME_LIMIT = 300; // 5 minutes in seconds
+
+        // Services data
+        const services = [
+            {
+                id: 'corte',
+                name: 'Corte',
+                description: 'Corte personalizado según tu estilo y tipo de cabello',
+                price: 15000
+            },
+            {
+                id: 'tintura',
+                name: 'Tintura',
+                description: 'Coloración profesional con productos de alta calidad',
+                price: 25000
+            },
+            {
+                id: 'mechas',
+                name: 'Mechas',
+                description: 'Iluminación y dimensión para tu cabello',
+                price: 30000
+            },
+            {
+                id: 'alisado',
+                name: 'Alisado',
+                description: 'Tratamiento alisador de larga duración',
+                price: 40000
+            },
+            {
+                id: 'tratamiento',
+                name: 'Tratamiento Capilar',
+                description: 'Hidratación profunda y reparación del cabello',
+                price: 18000
+            },
+            {
+                id: 'peinado',
+                name: 'Peinado',
+                description: 'Peinado profesional para eventos especiales',
+                price: 12000
+            }
+        ];
+
+        // Working hours
+        const workingHours = {
+            2: { start: 10, end: 19 }, // Tuesday
+            3: { start: 10, end: 19 }, // Wednesday
+            4: { start: 10, end: 19 }, // Thursday
+            5: { start: 10, end: 19 }, // Friday
+            6: { start: 10, end: 18 }  // Saturday
+        };
+
+        // State
+        let currentDate = new Date();
+        let selectedDate = null;
+        let selectedTime = null;
+        let selectedService = null;
+        let reservationTimer = null;
+        let timeLeft = RESERVATION_TIME_LIMIT;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', async () => {
+            await initializeStorage();
+            renderServices();
+            renderCalendar();
+            setupEventListeners();
+        });
+
+        // Storage initialization
+        async function initializeStorage() {
+            try {
+                // Initialize bookings if not exists
+                const bookings = await window.storage.get('bookings', true);
+                if (!bookings) {
+                    await window.storage.set('bookings', JSON.stringify({}), true);
+                }
+            } catch (error) {
+                console.log('Storage initialization:', error);
+                // Storage will be initialized on first use
+            }
+        }
+
+        // Render services
+        function renderServices() {
+            const grid = document.getElementById('servicesGrid');
+            grid.innerHTML = services.map(service => `
+                <div class="service-card" data-service="${service.id}">
+                    <h3>${service.name}</h3>
+                    <p>${service.description}</p>
+                    <div class="service-price">$${service.price.toLocaleString('es-AR')}</div>
+                </div>
+            `).join('');
+        }
+
+        // Render calendar
+        function renderCalendar() {
+            const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+                'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+            
+            document.getElementById('currentMonth').textContent = 
+                `${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
+
+            const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+            const lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+            const daysContainer = document.getElementById('calendarDays');
+            
+            daysContainer.innerHTML = '';
+
+            // Add empty cells for days before the first day of the month
+            for (let i = 0; i < firstDay.getDay(); i++) {
+                daysContainer.innerHTML += '<div class="calendar-day disabled"></div>';
+            }
+
+            // Add days of the month
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            for (let day = 1; day <= lastDay.getDate(); day++) {
+                const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
+                const dayOfWeek = date.getDay();
+                const isWorkingDay = workingHours[dayOfWeek];
+                const isPast = date < today;
+                const isSelected = selectedDate && 
+                    selectedDate.toDateString() === date.toDateString();
+
+                const className = `calendar-day ${!isWorkingDay || isPast ? 'disabled' : ''} ${isSelected ? 'selected' : ''}`;
+                
+                daysContainer.innerHTML += `
+                    <div class="${className}" data-date="${date.toISOString()}">
+                        <div>${day}</div>
+                    </div>
+                `;
+            }
+        }
+
+        // Generate time slots
+        async function generateTimeSlots(date) {
+            const dayOfWeek = date.getDay();
+            const hours = workingHours[dayOfWeek];
+            
+            if (!hours) return [];
+
+            const slots = [];
+            const dateStr = date.toISOString().split('T')[0];
+
+            // Get bookings for this date
+            let bookings = {};
+            try {
+                const result = await window.storage.get('bookings', true);
+                if (result) {
+                    bookings = JSON.parse(result.value);
+                }
+            } catch (error) {
+                console.log('Error loading bookings:', error);
+            }
+
+            const dayBookings = bookings[dateStr] || {};
+
+            for (let hour = hours.start; hour < hours.end; hour++) {
+                const time = `${hour.toString().padStart(2, '0')}:00`;
+                const bookingKey = `${dateStr}_${time}`;
+                const booking = dayBookings[time];
+                
+                let status = 'available';
+                if (booking) {
+                    if (booking.status === 'confirmed') {
+                        status = 'occupied';
+                    } else if (booking.status === 'reserved') {
+                        // Check if reservation has expired
+                        const reservedTime = new Date(booking.reservedAt);
+                        const now = new Date();
+                        const minutesPassed = (now - reservedTime) / 1000 / 60;
+                        
+                        if (minutesPassed > 5) {
+                            status = 'available';
+                            // Clean up expired reservation
+                            delete dayBookings[time];
+                            await window.storage.set('bookings', JSON.stringify(bookings), true);
+                        } else {
+                            status = 'reserved';
+                        }
+                    }
+                }
+
+                slots.push({ time, status });
+            }
+
+            return slots;
+        }
+
+        // Render time slots
+        async function renderTimeSlots(date) {
+            const container = document.getElementById('timeSlots');
+            const slots = await generateTimeSlots(date);
+
+            if (slots.length === 0) {
+                container.innerHTML = '<p style="text-align: center; opacity: 0.6;">No hay horarios disponibles para este día</p>';
+                return;
+            }
+
+            container.innerHTML = slots.map(slot => `
+                <div class="time-slot ${slot.status}" data-time="${slot.time}">
+                    ${slot.time}
+                </div>
+            `).join('');
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Calendar navigation
+            document.getElementById('prevMonth').addEventListener('click', () => {
+                currentDate.setMonth(currentDate.getMonth() - 1);
+                renderCalendar();
+                selectedDate = null;
+                document.getElementById('timeSlots').innerHTML = '';
+            });
+
+            document.getElementById('nextMonth').addEventListener('click', () => {
+                currentDate.setMonth(currentDate.getMonth() + 1);
+                renderCalendar();
+                selectedDate = null;
+                document.getElementById('timeSlots').innerHTML = '';
+            });
+
+            // Calendar day selection
+            document.getElementById('calendarDays').addEventListener('click', async (e) => {
+                const day = e.target.closest('.calendar-day');
+                if (!day || day.classList.contains('disabled')) return;
+
+                document.querySelectorAll('.calendar-day').forEach(d => d.classList.remove('selected'));
+                day.classList.add('selected');
+
+                selectedDate = new Date(day.dataset.date);
+                await renderTimeSlots(selectedDate);
+            });
+
+            // Time slot selection
+            document.getElementById('timeSlots').addEventListener('click', async (e) => {
+                const slot = e.target.closest('.time-slot');
+                if (!slot || !slot.classList.contains('available')) return;
+
+                selectedTime = slot.dataset.time;
+                await openBookingModal();
+            });
+
+            // Modal close
+            document.getElementById('closeModal').addEventListener('click', closeModal);
+            document.getElementById('bookingModal').addEventListener('click', (e) => {
+                if (e.target.id === 'bookingModal') closeModal();
+            });
+
+            // Confirm booking
+            document.getElementById('confirmBooking').addEventListener('click', confirmBooking);
+
+            // Service selection in modal
+            document.getElementById('serviceSelector').addEventListener('click', (e) => {
+                const option = e.target.closest('.service-option');
+                if (!option) return;
+
+                document.querySelectorAll('.service-option').forEach(o => o.classList.remove('selected'));
+                option.classList.add('selected');
+
+                selectedService = services.find(s => s.id === option.dataset.service);
+                updateBookingSummary();
+            });
+
+            // Payment option selection
+            document.querySelectorAll('input[name="payment"]').forEach(radio => {
+                radio.addEventListener('change', updateBookingSummary);
+            });
+        }
+
+        // Open booking modal
+        async function openBookingModal() {
+            // Reserve the slot temporarily
+            await reserveSlot();
+
+            // Render service selector
+            const serviceSelector = document.getElementById('serviceSelector');
+            serviceSelector.innerHTML = '<h3 style="color: var(--gold); margin-bottom: 1rem;">Selecciona el servicio:</h3>' +
+                services.map(service => `
+                    <div class="service-option" data-service="${service.id}">
+                        <strong>${service.name}</strong> - $${service.price.toLocaleString('es-AR')}
+                        <p style="font-size: 0.9rem; margin-top: 0.3rem; opacity: 0.8;">${service.description}</p>
+                    </div>
+                `).join('');
+
+            // Select first service by default
+            selectedService = services[0];
+            document.querySelector('.service-option').classList.add('selected');
+
+            updateBookingSummary();
+            startReservationTimer();
+
+            document.getElementById('bookingModal').classList.add('active');
+        }
+
+        // Reserve slot temporarily
+        async function reserveSlot() {
+            try {
+                const dateStr = selectedDate.toISOString().split('T')[0];
+                const result = await window.storage.get('bookings', true);
+                const bookings = result ? JSON.parse(result.value) : {};
+
+                if (!bookings[dateStr]) {
+                    bookings[dateStr] = {};
+                }
+
+                bookings[dateStr][selectedTime] = {
+                    status: 'reserved',
+                    reservedAt: new Date().toISOString()
+                };
+
+                await window.storage.set('bookings', JSON.stringify(bookings), true);
+            } catch (error) {
+                console.error('Error reserving slot:', error);
+            }
+        }
+
+        // Release reserved slot
+        async function releaseSlot() {
+            try {
+                const dateStr = selectedDate.toISOString().split('T')[0];
+                const result = await window.storage.get('bookings', true);
+                if (!result) return;
+
+                const bookings = JSON.parse(result.value);
+                if (bookings[dateStr] && bookings[dateStr][selectedTime]) {
+                    if (bookings[dateStr][selectedTime].status === 'reserved') {
+                        delete bookings[dateStr][selectedTime];
+                        await window.storage.set('bookings', JSON.stringify(bookings), true);
+                    }
+                }
+            } catch (error) {
+                console.error('Error releasing slot:', error);
+            }
+        }
+
+        // Update booking summary
+        function updateBookingSummary() {
+            if (!selectedService) return;
+
+            const paymentOption = document.querySelector('input[name="payment"]:checked').value;
+            const price = selectedService.price;
+
+            let amountToPay = price;
+            let paymentText = '';
+
+            switch (paymentOption) {
+                case 'third':
+                    amountToPay = Math.round(price / 3);
+                    paymentText = 'Un tercio del total';
+                    break;
+                case 'half':
+                    amountToPay = Math.round(price / 2);
+                    paymentText = 'La mitad del total';
+                    break;
+                case 'full':
+                    amountToPay = price;
+                    paymentText = 'Pago total';
+                    break;
+                case 'cash':
+                    amountToPay = 0;
+                    paymentText = 'Pago en efectivo';
+                    break;
+            }
+
+            document.getElementById('thirdAmount').textContent = `$${Math.round(price / 3).toLocaleString('es-AR')}`;
+            document.getElementById('halfAmount').textContent = `$${Math.round(price / 2).toLocaleString('es-AR')}`;
+            document.getElementById('fullAmount').textContent = `$${price.toLocaleString('es-AR')}`;
+
+            const dateStr = selectedDate.toLocaleDateString('es-AR', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+
+            document.getElementById('bookingSummary').innerHTML = `
+                <p><strong>Servicio:</strong> <span>${selectedService.name}</span></p>
+                <p><strong>Fecha:</strong> <span>${dateStr}</span></p>
+                <p><strong>Hora:</strong> <span>${selectedTime}</span></p>
+                <p><strong>Precio total:</strong> <span style="color: var(--gold);">$${price.toLocaleString('es-AR')}</span></p>
+                <p><strong>Forma de pago:</strong> <span>${paymentText}</span></p>
+                ${amountToPay > 0 ? `<p><strong>Monto a pagar ahora:</strong> <span style="color: var(--gold); font-size: 1.2rem;">$${amountToPay.toLocaleString('es-AR')}</span></p>` : ''}
+                ${paymentOption !== 'full' && paymentOption !== 'cash' ? '<p style="font-size: 0.9rem; margin-top: 1rem; opacity: 0.8;">⚠️ El resto del monto deberá abonarse el día del turno</p>' : ''}
+            `;
+        }
+
+        // Start reservation timer
+        function startReservationTimer() {
+            timeLeft = RESERVATION_TIME_LIMIT;
+            updateTimerDisplay();
+
+            if (reservationTimer) clearInterval(reservationTimer);
+
+            reservationTimer = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+
+                if (timeLeft <= 0) {
+                    clearInterval(reservationTimer);
+                    closeModal();
+                    alert('El tiempo de reserva ha expirado. Por favor, intenta nuevamente.');
+                }
+            }, 1000);
+        }
+
+        // Update timer display
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            document.getElementById('timerDisplay').textContent = 
+                `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        // Close modal
+        async function closeModal() {
+            if (reservationTimer) {
+                clearInterval(reservationTimer);
+                reservationTimer = null;
+            }
+
+            await releaseSlot();
+            document.getElementById('bookingModal').classList.remove('active');
+            selectedTime = null;
+            selectedService = null;
+
+            // Refresh time slots
+            if (selectedDate) {
+                await renderTimeSlots(selectedDate);
+            }
+        }
+
+        // Confirm booking
+        async function confirmBooking() {
+            const paymentOption = document.querySelector('input[name="payment"]:checked').value;
+            const price = selectedService.price;
+
+            let amountToPay = price;
+            switch (paymentOption) {
+                case 'third':
+                    amountToPay = Math.round(price / 3);
+                    break;
+                case 'half':
+                    amountToPay = Math.round(price / 2);
+                    break;
+                case 'full':
+                    amountToPay = price;
+                    break;
+                case 'cash':
+                    amountToPay = 0;
+                    break;
+            }
+
+            const dateStr = selectedDate.toLocaleDateString('es-AR', { 
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            });
+
+            // Create WhatsApp message
+            const paymentTypeText = {
+                'third': `un tercio ($${Math.round(price / 3).toLocaleString('es-AR')})`,
+                'half': `la mitad ($${Math.round(price / 2).toLocaleString('es-AR')})`,
+                'full': `el total ($${price.toLocaleString('es-AR')})`,
+                'cash': 'en efectivo en el local'
+            };
+
+            const message = `Hola! Quiero reservar un turno:
+📅 Fecha: ${dateStr}
+🕐 Hora: ${selectedTime}
+✂️ Servicio: ${selectedService.name}
+💰 Precio total: $${price.toLocaleString('es-AR')}
+💳 Forma de pago: ${paymentTypeText[paymentOption]}`;
+
+            if (paymentOption === 'cash') {
+                // Direct WhatsApp for cash payment
+                const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+                
+                // Confirm booking
+                await confirmSlot();
+                
+                window.open(whatsappUrl, '_blank');
+                closeModal();
+                alert('¡Reserva confirmada! Te hemos redirigido a WhatsApp para confirmar tu asistencia.');
+                return;
+            }
+
+            // For online payments, redirect to WhatsApp with Mercado Pago link
+            const mpMessage = `${message}
+
+Para confirmar tu reserva, realiza el pago de $${amountToPay.toLocaleString('es-AR')} a través de Mercado Pago.
+
+Te enviaré el link de pago por este chat. Una vez confirmado el pago, tu turno quedará reservado.`;
+
+            const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(mpMessage)}`;
+            
+            // Store pending booking
+            await storePendingBooking(paymentOption, amountToPay);
+            
+            window.open(whatsappUrl, '_blank');
+            closeModal();
+            alert('¡Casi listo! Te hemos redirigido a WhatsApp. La peluquería te enviará el link de Mercado Pago para completar el pago y confirmar tu reserva.');
+        }
+
+        // Store pending booking
+        async function storePendingBooking(paymentType, amount) {
+            try {
+                const dateStr = selectedDate.toISOString().split('T')[0];
+                const result = await window.storage.get('bookings', true);
+                const bookings = result ? JSON.parse(result.value) : {};
+
+                if (!bookings[dateStr]) {
+                    bookings[dateStr] = {};
+                }
+
+                bookings[dateStr][selectedTime] = {
+                    status: 'pending_payment',
+                    service: selectedService.id,
+                    serviceName: selectedService.name,
+                    price: selectedService.price,
+                    paymentType: paymentType,
+                    amountPaid: 0,
+                    amountToPay: amount,
+                    createdAt: new Date().toISOString()
+                };
+
+                await window.storage.set('bookings', JSON.stringify(bookings), true);
+            } catch (error) {
+                console.error('Error storing pending booking:', error);
+            }
+        }
+
+        // Confirm slot (for cash payments)
+        async function confirmSlot() {
+            try {
+                const dateStr = selectedDate.toISOString().split('T')[0];
+                const result = await window.storage.get('bookings', true);
+                const bookings = result ? JSON.parse(result.value) : {};
+
+                if (!bookings[dateStr]) {
+                    bookings[dateStr] = {};
+                }
+
+                bookings[dateStr][selectedTime] = {
+                    status: 'confirmed',
+                    service: selectedService.id,
+                    serviceName: selectedService.name,
+                    price: selectedService.price,
+                    paymentType: 'cash',
+                    confirmedAt: new Date().toISOString()
+                };
+
+                await window.storage.set('bookings', JSON.stringify(bookings), true);
+            } catch (error) {
+                console.error('Error confirming slot:', error);
+            }
+        }
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
